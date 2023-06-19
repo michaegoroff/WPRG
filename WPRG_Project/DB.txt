@@ -1,0 +1,38 @@
+CREATE TABLE User (
+  UserID int NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
+  IsLoggedIn tinyint DEFAULT NULL,
+  UserName varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL UNIQUE,
+  Password varchar(64) DEFAULT NULL,
+  UserRole varchar(64) DEFAULT NULL,
+  CreationDate datetime DEFAULT NULL,
+  UserPicName varchar(128) DEFAULT 'default.png'
+);
+
+CREATE TABLE Section (
+  SectionID int NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+  SectionName varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL UNIQUE,
+  SectionDescription varchar(512) DEFAULT NULL
+);
+
+CREATE TABLE Topic (
+  TopicID int NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
+  TopicName varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL UNIQUE,
+  TopicDescription varchar(512) DEFAULT NULL,
+  CreationDate datetime DEFAULT NULL,
+  CreatedByUserID int DEFAULT NULL,
+  InSectionID int DEFAULT NULL,
+  FOREIGN KEY (CreatedByUserID) REFERENCES User(UserID),
+  FOREIGN KEY (InSectionID) REFERENCES Section(SectionID)
+);
+
+CREATE TABLE Commentary(
+  CommentID int NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
+  CommentText varchar(4096) DEFAULT NULL,
+  CreationDate datetime DEFAULT NULL,
+  CreatedByuserID int DEFAULT NULL,
+  IntopicID int DEFAULT NULL,
+  UserWasLogged int DEFAULT NULL,
+  CreatedByUserName varchar(64) DEFAULT NULL,
+  FOREIGN KEY (CreatedByuserID) REFERENCES User(UserID),
+  FOREIGN KEY (IntopicID) REFERENCES Topic(TopicID)
+);
